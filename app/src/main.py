@@ -1,10 +1,16 @@
+import os
+
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, func
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, func, text
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-# hardcoded for now — works on my machine
-DATABASE_URL = "postgresql+psycopg2://postgres:password@localhost:5432/notes"
+# Config comes from the environment. The local default is only for convenience;
+# in production the real connection string is injected as an env var.
+DATABASE_URL = os.environ.get(
+    "DATABASE_URL",
+    "postgresql+psycopg2://postgres:password@localhost:5432/notes",
+)
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
@@ -34,6 +40,17 @@ class NoteOut(NoteIn):
 
     class Config:
         from_attributes = True
+
+
+@app.get("/health")
+def health():
+    try:
+        db = SessionLocal()
+        db.execute(text("SELECT 1"))
+        db.close()
+        return {"status": "ok"}
+    except Exception:
+        raise HTTPException(status_code=503, detail="database unavailable")
 
 
 @app.get("/notes", response_model=list[NoteOut])
