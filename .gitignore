@@ -1,4 +1,4 @@
-Python
+# Python
 __pycache__/
 *.py[cod]
 .venv/
@@ -7,3 +7,10 @@ venv/
 
 # Environment
 .env
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+errored.tfstate
+crash.log
+*.tfvars
