@@ -12,6 +12,8 @@ env:
   AWS_REGION: us-east-1
   ECR_REPOSITORY: notes-staging
   AWS_ROLE_ARN: arn:aws:iam::713923090919:role/notes-staging-github-actions
+  ECS_CLUSTER: notes-staging-cluster
+  ECS_SERVICE: notes-staging-service
 
 jobs:
   build-and-push:
@@ -67,3 +69,11 @@ jobs:
           docker build -t "$IMAGE:latest" -t "$IMAGE:${{ github.sha }}" .
           docker push "$IMAGE:latest"
           docker push "$IMAGE:${{ github.sha }}"
+
+      - name: Deploy to ECS
+        run: |
+          aws ecs update-service \
+            --cluster "$ECS_CLUSTER" \
+            --service "$ECS_SERVICE" \
+            --force-new-deployment \
+            --region "$AWS_REGION"
