@@ -32,6 +32,8 @@ flowchart TD
     ECS -. logs .-> CW[CloudWatch]
 ```
 
+![Notes API running live on AWS](assets/live-app.png)
+
 ## Tech stack
 
 - **Cloud:** AWS — ECS Fargate, ECR, RDS (Postgres), Application Load Balancer, IAM, SSM Parameter Store, CloudWatch
@@ -50,6 +52,10 @@ On every push to `main`:
 4. Deploy automatically to the ECS service.
 
 No images are built or pushed from a laptop — the pipeline does it on stable infrastructure.
+
+![CI/CD pipeline run](assets/pipeline.png)
+
+![CI/CD pipeline run](assets/pipeline-2.png)
 
 ## Repository layout
 
@@ -78,3 +84,5 @@ terraform apply
 # then push to main (or re-run the pipeline) to build and deploy the image
 terraform output app_url
 ```
+
+![CloudWatch logs showing healthy traffic](assets/cloudwatch-logs.png)
