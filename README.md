@@ -57,6 +57,7 @@ No images are built or pushed from a laptop — the pipeline does it on stable i
 
 
 Every push to main runs tests, security scans, builds the image, and deploys automatically:
+
 ![CI/CD pipeline run](assets/pipeline.png)
 
 ![CI/CD pipeline run](assets/pipeline-2.png)
@@ -88,6 +89,6 @@ terraform apply
 # then push to main (or re-run the pipeline) to build and deploy the image
 terraform output app_url
 ```
-
 Healthy in production — the load balancer's health checks returning 200 in CloudWatch:
+
 ![CloudWatch logs showing healthy traffic](assets/cloudwatch-logs.png)
