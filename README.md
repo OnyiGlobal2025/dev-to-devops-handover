@@ -32,6 +32,8 @@ flowchart TD
     ECS -. logs .-> CW[CloudWatch]
 ```
 
+The result, live on AWS — a note created and read back through the load balancer, persisting in RDS:
+
 ![Notes API running live on AWS](assets/live-app.png)
 
 ## Tech stack
@@ -53,6 +55,8 @@ On every push to `main`:
 
 No images are built or pushed from a laptop — the pipeline does it on stable infrastructure.
 
+
+Every push to main runs tests, security scans, builds the image, and deploys automatically:
 ![CI/CD pipeline run](assets/pipeline.png)
 
 ![CI/CD pipeline run](assets/pipeline-2.png)
@@ -85,4 +89,5 @@ terraform apply
 terraform output app_url
 ```
 
+Healthy in production — the load balancer's health checks returning 200 in CloudWatch:
 ![CloudWatch logs showing healthy traffic](assets/cloudwatch-logs.png)
